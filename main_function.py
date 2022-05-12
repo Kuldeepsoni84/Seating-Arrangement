@@ -162,8 +162,10 @@ def genrate_attendance_sheet(att_df,date,file_name=''):
         sheet.cell(row=start_row,column=1).value='Signature'
         sheet.cell(row = start_row, column = 1).font=Font(size = 10,bold=True)
         sheet.cell(row = start_row, column = 1).alignment=Alignment(horizontal='right')
+        
+        next_page_horizon, next_page_vertical = sheet.page_breaks
+        next_page_horizon.append(Break(start_row))
         start_row=len(sheet['A'])+1
-    
     wb.save(file_name+' Attendance sheet.xlsx')
 def genrate_seat_plan(df,n_seat,n_row,file_name='Alternate '):
     wb = openpyxl.Workbook() 
