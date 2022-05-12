@@ -6,7 +6,7 @@ import csv
 import openpyxl
 from openpyxl.styles import Font
 from openpyxl.styles import Alignment
-from openpyxl.worksheet.pagebreak import Break
+from openpyxl.worksheet.pagebreak import Break, PageBreak
 def break_list(f,min_deffrence,total_stu):
     x1=[]
     x2=[]
@@ -105,11 +105,11 @@ def arrange_alternate(group1,group2,x):
         df["Room"]=(i//x)+1
         simple_df=pd.concat([simple_df,df])'''
     
-def room_alotment(df,n_seat):
+def room_alotment(df,n_seat,room):
     alternate_df=pd.DataFrame()
     for i in range(0,len(df),n_seat):
         df3=pd.DataFrame(df[i:i+n_seat])
-        df3["Room"]=(i//n_seat)+1
+        df3["Room"]=(i//n_seat)+1#room[i]
         alternate_df=pd.concat([alternate_df,df3])
     return alternate_df
 def genrate_attendance_sheet(att_df,date,file_name=''):
@@ -244,8 +244,7 @@ def genrate_seat_plan(df,n_seat,n_row,file_name='Alternate '):
             sheet.cell(row=start_row,column=3).value=x[1]
             sheet.cell(row = start_row, column = 3).font=Font(size = 12,bold=True)
     
-        #fred=sheet.pagebreak.Break(id=start_row)
-        #sheet.pagebreak.PageBreak(brk=[fred])
-        #sheet.append(fred)
+        next_page_horizon, next_page_vertical = sheet.page_breaks
+        next_page_horizon.append(Break(start_row))
         start_row=len(sheet['A'])+1
     wb.save(file_name+' Seating Plan.xlsx')
