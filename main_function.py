@@ -55,11 +55,9 @@ def get_class_list(x,y,classes):
     return list1,list2
 
 def assign_group_to_class(df,class_list,group=1):
-        temp=pd.DataFrame()
-        for c in class_list:
-                temp=pd.concat([temp,df[df['Class']==c]])
-                temp['Group']=group
-        return temp
+        df=df[df['Class'].isin(class_list)]
+        return df
+        
 def genrate_id(df):
     t=[]
     for i in df.iterrows():
